@@ -1,0 +1,47 @@
+{% extends 'grades/base.html' %}
+{% block title %}Вход{% endblock %}
+{% block centered_title %}Войти в аккаунт{% endblock %}
+
+{% block content %}
+  <div class="card" style="max-width: 500px; margin: 2rem auto; background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+    <form method="post">
+      {% csrf_token %}
+      
+      {% if messages %}
+        <div style="margin-bottom: 1.5rem; padding: 0.85rem; background: #fee2e2; border: 1px solid #fecaca; border-radius: var(--radius); color: #b91c1c; font-weight: 600; display: flex; align-items: center; gap: 0.75rem;">
+          <i class="fas fa-exclamation-circle"></i>
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Логин</label>
+        <input 
+          type="text" 
+          name="username" 
+          required 
+          value="{{ request.POST.username|default:'' }}" 
+          style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);"
+        >
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Пароль</label>
+        <input 
+          type="password" 
+          name="password" 
+          required 
+          style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);"
+        >
+      </div>
+      
+      <button type="submit" class="btn" style="width: 100%;">Войти</button>
+    </form>
+    
+    <div style="margin-top: 1.75rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+      <p>Нет аккаунта? <a href="{% url 'accounts:register' %}" style="color: var(--primary); font-weight: 600;">Зарегистрироваться</a></p>
+    </div>
+  </div>
+{% endblock %}

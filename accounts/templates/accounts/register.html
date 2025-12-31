@@ -1,0 +1,27 @@
+{% extends 'grades/base.html' %}
+{% block title %}Регистрация{% endblock %}
+{% block page_title %}Создать аккаунт{% endblock %}
+
+{% block content %}
+  <div class="card" style="max-width: 500px; margin: 0 auto; background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+    <form method="post">
+      {% csrf_token %}
+      <div style="margin-bottom: 1.25rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Логин</label>
+        <input type="text" name="username" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      <div style="margin-bottom: 1.25rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Пароль</label>
+        <input type="password" name="password1" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Подтвердите пароль</label>
+        <input type="password" name="password2" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+    </form>
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}" style="color: var(--primary); font-weight: 600;">Войти</a></p>
+    </div>
+  </div>
+{% endblock %}

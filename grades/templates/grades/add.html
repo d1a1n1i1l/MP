@@ -1,0 +1,59 @@
+{% extends 'grades/base.html' %}
+
+{% block title %}Добавить дисциплину{% endblock %}
+
+{% block content %}
+  <div class="card" style="background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+    <h2 style="margin-bottom: 1.5rem; color: var(--fg);">Добавить новую дисциплину</h2>
+    
+    <form method="post" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      {% csrf_token %}
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Семестр</label>
+        <input 
+          type="text" 
+          name="semester" 
+          required 
+          placeholder="Например: 3 семестр 2024"
+          style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);"
+        >
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Название дисциплины</label>
+        <input 
+          type="text" 
+          name="title" 
+          required 
+          style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);"
+        >
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Оценка</label>
+        <input 
+          type="text" 
+          name="grade" 
+          required 
+          placeholder="5, отлично, A и т.д."
+          style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);"
+        >
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" name="for_diploma" id="for_diploma" style="width: 18px; height: 18px;">
+        <label for="for_diploma" style="font-weight: 500;">Включить в диплом</label>
+      </div>
+      
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button type="submit" class="btn" style="flex: 1; min-width: 120px;">
+          <i class="fas fa-save"></i> Сохранить
+        </button>
+        <a href="{% url 'list' %}" class="btn btn-outline" style="flex: 1; min-width: 120px; justify-content: center;">
+          <i class="fas fa-times"></i> Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

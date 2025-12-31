@@ -1,0 +1,65 @@
+{% extends 'grades/base.html' %}
+{% block title %}Новая дисциплина{% endblock %}
+
+{% block content %}
+  <div class="card" style="background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+    <h2>Добавить дисциплину в {{ semester }}</h2>
+    
+    <form method="post" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      {% csrf_token %}
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Название</label>
+        <input type="text" name="title" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Тип дисциплины</label>
+        <select name="type" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+          <option value="lecture">Лекционный курс</option>
+          <option value="practice">Практика</option>
+          <option value="coursework">Курсовая работа</option>
+          <option value="project">Проект</option>
+          <option value="exam">Экзамен</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Ожидаемая оценка</label>
+        <select name="expected_grade" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+          <option value="">—</option>
+          <option value="5">5 (отлично)</option>
+          <option value="4">4 (хорошо)</option>
+          <option value="3">3 (удовл.)</option>
+          <option value="2">2 (неуд.)</option>
+        </select>
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Фактическая оценка</label>
+        <select name="actual_grade" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+          <option value="">—</option>
+          <option value="5">5 (отлично)</option>
+          <option value="4">4 (хорошо)</option>
+          <option value="3">3 (удовл.)</option>
+          <option value="2">2 (неуд.)</option>
+        </select>
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" name="for_diploma" id="for_diploma" style="width: 18px; height: 18px;">
+        <label for="for_diploma" style="font-weight: 500;">Включить в диплом</label>
+      </div>
+      
+      <div style="display: flex; gap: 1rem;">
+        <button type="submit" class="btn" style="flex: 1;">
+          <i class="fas fa-save"></i> Сохранить
+        </button>
+        <a href="{% url 'grades:semester_detail' semester.id %}" class="btn btn-outline" style="flex: 1; justify-content: center;">
+          Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

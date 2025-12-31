@@ -1,0 +1,48 @@
+{% extends 'grades/base.html' %}
+
+{% block content %}
+  {% if disciplines %}
+    <table>
+      <thead>
+        <tr>
+          <th>Семестр</th>
+          <th>Дисциплина</th>
+          <th>Оценка</th>
+          <th>В диплом</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in disciplines %}
+        <tr>
+          <td>{{ d.semester }}</td>
+          <td>{{ d.title }}</td>
+          <td>
+            {% if d.grade == "5" or d.grade == "отлично" or d.grade == "A" %}
+              <span class="grade-badge grade-5">{{ d.grade }}</span>
+            {% elif d.grade == "4" or d.grade == "хорошо" or d.grade == "B" %}
+              <span class="grade-badge grade-4">{{ d.grade }}</span>
+            {% elif d.grade == "3" or d.grade == "удовл" or d.grade == "C" %}
+              <span class="grade-badge grade-3">{{ d.grade }}</span>
+            {% elif d.grade == "2" or d.grade == "неуд" or d.grade == "F" %}
+              <span class="grade-badge grade-2">{{ d.grade }}</span>
+            {% else %}
+              <span class="grade-badge">{{ d.grade }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if d.for_diploma %}
+              <i class="fas fa-certificate diploma-icon" title="В диплом"></i>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <i class="fas fa-book-open"></i>
+      <h3>Нет дисциплин</h3>
+      <p>Добавьте свою первую дисциплину, чтобы начать учёт успеваемости</p>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'grades/base.html' %}
+{% block title %}Семестр {{ semester.number }}{% endblock %}
+{% block page_title %}Семестр {{ semester.number }} ({{ semester.academic_year }}){% endblock %}
+
+{% block content %}
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <div>
+      <h2>Семестр {{ semester.number }} ({{ semester.academic_year }})</h2>
+      <p>Средний балл: <strong>{{ gpa|floatformat:"2" }}</strong></p>
+    </div>
+    <a href="{% url 'grades:add_discipline' semester.id %}" class="btn">
+      <i class="fas fa-plus"></i> Добавить дисциплину
+    </a>
+  </div>
+
+  {% if disciplines %}
+    <table>
+      <thead>
+        <tr>
+          <th>Дисциплина</th>
+          <th>Тип</th>
+          <th>Ожидаемая</th>
+          <th>Фактическая</th>
+          <th>В диплом</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in disciplines %}
+        <tr>
+          <td>{{ d.title }}</td>
+          <td>{{ d.get_type_display }}</td>
+          <td>{{ d.expected_grade|default:"—" }}</td>
+          <td>
+            {% if d.actual_grade %}
+              <span class="grade-badge 
+                {% if d.actual_grade == "5" %}grade-5
+                {% elif d.actual_grade == "4" %}grade-4
+                {% elif d.actual_grade == "3" %}grade-3
+                {% elif d.actual_grade == "2" %}grade-2
+                {% endif %}">
+                {{ d.actual_grade }}
+              </span>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>
+            {% if d.for_diploma %}
+              <i class="fas fa-certificate diploma-icon" title="В диплом"></i>
+            {% endif %}
+          </td>
+          <td>
+            <!-- Красивая кнопка удаления -->
+            <button type="button"
+                    onclick="openDeleteModal('{{ d.id }}', '{{ d.title }}')"
+                    style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #b91c1c; text-decoration: none; transition: all 0.2s ease; border: none; cursor: pointer;"
+                    onmouseover="this.style.background='#fecaca'; this.style.transform='scale(1.05)';"
+                    onmouseout="this.style.background='#fee2e2'; this.style.transform='scale(1)';">
+              <i class="fas fa-trash-alt" style="font-size: 0.9rem;"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <i class="fas fa-book"></i>
+      <h3>Нет дисциплин</h3>
+      <p>Добавьте первую дисциплину в этот семестр</p>
+    </div>
+  {% endif %}
+  
+  <div style="margin-top: 2rem;">
+    <a href="{% url 'grades:dashboard' %}" class="btn btn-outline">
+      <i class="fas fa-arrow-left"></i> Назад к семестрам
+    </a>
+  </div>
+
+  <!-- Модальное окно удаления -->
+  <!-- Замените весь блок модального окна на этот -->
+  <div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; padding: 1rem;">
+    <div style="background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); max-width: 400px; width: 100%;">
+      <h3 style="margin-bottom: 1rem; color: var(--fg);">Подтвердите действие</h3>
+      <p style="margin-bottom: 1.5rem; color: var(--fg);">Удалить дисциплину <strong id="modalDisciplineTitle"></strong>?</p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button type="button" onclick="closeDeleteModal()" style="padding: 0.6rem 1rem; background: var(--border); color: var(--fg); border: none; border-radius: var(--radius); cursor: pointer;">Нет</button>
+        <a id="deleteConfirmLink" href="#" style="padding: 0.6rem 1rem; background: #ef4444; color: white; border: none; border-radius: var(--radius); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Да</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Отступ под фиксированный футер -->
+  <div style="height: 5rem;"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function openDeleteModal(id, title) {
+    document.getElementById('modalDisciplineTitle').textContent = title;
+    document.getElementById('deleteConfirmLink').href = `/discipline/${id}/delete/`;
+    document.getElementById('deleteModal').style.display = 'flex';
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+  }
+</script>
+{% endblock %}

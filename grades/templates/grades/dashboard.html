@@ -1,0 +1,53 @@
+{% extends 'grades/base.html' %}
+{% block title %}Моя ведомость{% endblock %}
+{% block page_title %}Моя академическая ведомость{% endblock %}
+{% block page_actions %}
+  <a href="{% url 'grades:add_semester' %}" class="btn">
+    <i class="fas fa-plus"></i> Добавить семестр
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="stats-card" style="background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+    <div class="stat-item">
+      <h3>Средний балл (диплом)</h3>
+      <p>{{ diploma_gpa|floatformat:"2" }}</p>
+    </div>
+    <div class="stat-item">
+      <h3>Всего семестров</h3>
+      <p>{{ semester_data|length }}</p>
+    </div>
+  </div>
+
+  {% if semester_data %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+      {% for item in semester_data %}
+        <div style="background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow);">
+          <h3 style="color: var(--primary); margin-bottom: 0.75rem;">
+            Семестр {{ item.semester.number }}<br>
+            <small>{{ item.semester.academic_year }}</small>
+          </h3>
+          <div style="display: flex; justify-content: space-between; margin: 1rem 0; color: var(--fg);">
+            <span>Дисциплин:</span>
+            <strong>{{ item.discipline_count }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin: 1rem 0; color: var(--fg);">
+            <span>Средний балл:</span>
+            <strong>{{ item.gpa|floatformat:"2" }}</strong>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <a href="{% url 'grades:semester_detail' item.semester.id %}" class="btn" style="flex:1; padding: 0.5rem; font-size: 0.9rem;">
+              <i class="fas fa-eye"></i> Открыть
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <i class="fas fa-calendar-alt"></i>
+      <h3>Нет семестров</h3>
+      <p>Создайте первый семестр, чтобы начать учёт</p>
+    </div>
+  {% endif %}
+{% endblock %}

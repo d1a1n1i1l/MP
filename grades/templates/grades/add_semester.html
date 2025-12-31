@@ -1,0 +1,27 @@
+{% extends 'grades/base.html' %}
+{% block title %}Новый семестр{% endblock %}
+
+{% block content %}
+  <div class="card" style="background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+    <h2>Добавить семестр</h2>
+    <form method="post" style="display: flex; flex-direction: column; gap: 1.25rem; max-width: 500px;">
+      {% csrf_token %}
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Номер семестра</label>
+        <input type="number" name="number" min="1" max="12" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Учебный год</label>
+        <input type="text" name="academic_year" placeholder="2024/2025" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg);">
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <button type="submit" class="btn" style="flex: 1;">
+          <i class="fas fa-save"></i> Создать
+        </button>
+        <a href="{% url 'grades:dashboard' %}" class="btn btn-outline" style="flex: 1; justify-content: center;">
+          Отмена
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
