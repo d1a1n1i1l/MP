@@ -73,3 +73,12 @@ def delete_discipline(request, discipline_id):
     semester_id = discipline.semester.id
     discipline.delete()
     return redirect('grades:semester_detail', semester_id=semester_id)
+@login_required
+def diploma_view(request):
+    """Страница диплома: только дисциплины с for_diploma=True"""
+    disciplines = Discipline.objects.filter(user=request.user, for_diploma=True).select_related('semester')
+    gpa = Discipline.calculate_gpa(disciplines)
+    return render(request, 'grades/diploma.html', {
+        'disciplines': disciplines,
+        'gpa': gpa
+    })  

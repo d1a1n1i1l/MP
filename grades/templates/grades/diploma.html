@@ -1,0 +1,59 @@
+{% extends 'grades/base.html' %}
+{% block title %}Диплом{% endblock %}
+{% block centered_title %}Академический диплом{% endblock %}
+
+{% block content %}
+  <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+
+    {% if disciplines %}
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+        <thead>
+          <tr>
+            <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Семестр</th>
+            <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Дисциплина</th>
+            <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Оценка</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in disciplines %}
+          <tr>
+            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ d.semester.number }}</td>
+            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ d.title }}</td>
+            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+              <span class="grade-badge 
+                {% if d.actual_grade == "5" %}grade-5
+                {% elif d.actual_grade == "4" %}grade-4
+                {% elif d.actual_grade == "3" %}grade-3
+                {% elif d.actual_grade == "2" %}grade-2
+                {% endif %}">
+                {{ d.actual_grade }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="text-align: center; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Средний балл диплома</h3>
+        <p style="font-size: 2rem; font-weight: 700; color: var(--fg);">{{ gpa|floatformat:"2" }}</p>
+      </div>
+
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-graduation-cap"></i>
+        <h3>Нет дисциплин для диплома</h3>
+        <p>Отметьте галочкой дисциплины в настройках, чтобы они отображались здесь</p>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'grades:dashboard' %}" class="btn btn-outline" style="padding: 0.6rem 1.2rem;">
+      <i class="fas fa-arrow-left"></i> Назад
+    </a>
+  </div>
+
+  <div style="height: 5rem;"></div>
+{% endblock %}

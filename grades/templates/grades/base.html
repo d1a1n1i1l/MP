@@ -48,6 +48,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 1.5rem;
+      min-height: calc(100vh - 8rem); /* 8rem = header + footer */
     }
 
     header {
@@ -217,7 +218,6 @@
 
     footer {
       text-align: center;
-      margin-top: 3rem;
       padding: 1.5rem 0;
       color: #94a3b8;
       font-size: 0.875rem;
@@ -255,17 +255,21 @@
       </div>
     </header>
 
-    <div class="page-header">
-      <h1 style="text-align: center; width: 100%;">{% block page_title %}{% endblock %}</h1>
-      {% block page_actions %}{% endblock %}
-    </div>
+    <!-- Условный заголовок -->
+    {% if block.super == "Войти в аккаунт" %}
+      <h1 style="text-align: center; margin: 2rem 0;">Войти в аккаунт</h1>
+    {% else %}
+      <div class="page-header">
+        <h1>{% block page_title %}{% endblock %}</h1>
+        {% block page_actions %}{% endblock %}
+      </div>
+    {% endif %}
 
     {% block content %}{% endblock %}
     {% block extra_js %}{% endblock %}
-    <div style="height: 5rem;"></div>
   </div>
 
-  <footer style="position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; padding: 1.5rem 0; color: #94a3b8; font-size: 0.875rem; border-top: 1px solid var(--border); background: var(--bg);">
+  <footer style="background: var(--bg);">
     <p>© 2025 Academic Tracker • Ведомость за всё обучение</p>
   </footer>
 
