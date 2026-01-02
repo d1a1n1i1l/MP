@@ -5,12 +5,20 @@
 {% block content %}
   <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
 
+    <!-- Кнопка экспорта PDF -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <a href="{% url 'grades:diploma_pdf' %}" class="btn" style="background: var(--success); padding: 0.6rem 1.2rem; font-size: 0.95rem;">
+        <i class="fas fa-file-pdf"></i> Скачать PDF
+      </a>
+    </div>
+
     {% if disciplines %}
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
         <thead>
           <tr>
             <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Семестр</th>
             <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Дисциплина</th>
+            <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Вид контроля</th>
             <th style="padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--primary);">Оценка</th>
           </tr>
         </thead>
@@ -19,6 +27,7 @@
           <tr>
             <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ d.semester.number }}</td>
             <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ d.title }}</td>
+            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ d.get_assessment_type_display }}</td>
             <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
               <span class="grade-badge 
                 {% if d.actual_grade == "5" %}grade-5
