@@ -6,8 +6,8 @@ from django.http import HttpResponseRedirect
 @login_required
 def dashboard(request):
     semesters = Semester.objects.filter(user=request.user)
-
-    # Данные по каждому семестру
+    
+    # Только данные по семестрам
     semester_data = []
     for s in semesters:
         disciplines = s.disciplines.all()
@@ -16,14 +16,11 @@ def dashboard(request):
             'semester': s,
             'gpa': gpa,
             'discipline_count': disciplines.count()
-        })    
-        
-    # Средний бал для диплома
-    diploma_gpa = Discipline.calculate_diploma_gpa(request.user)
+        })
     
     return render(request, 'grades/dashboard.html', {
-        'semester_data': semester_data,
-        'diploma_gpa': diploma_gpa
+        'semester_data': semester_data
+        # Убрано: 'diploma_gpa': ...
     })
         
         
@@ -60,7 +57,7 @@ def add_discipline(request, semester_id):
             user=request.user,
             semester=semester,
             title=request.POST['title'],
-            type=request.POST.get('type', 'lecture'),
+            assessment_type=request.POST.get('assessment_type', 'exam'),
             expected_grade=request.POST.get('expected_grade', ''),
             actual_grade=request.POST.get('actual_grade', ''),
             for_diploma='for_diploma' in request.POST

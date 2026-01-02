@@ -13,17 +13,6 @@
 {% endblock %}
 
 {% block content %}
-  <div class="stats-card" style="background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-    <div class="stat-item">
-      <h3>Средний балл (диплом)</h3>
-      <p>{{ diploma_gpa|floatformat:"2" }}</p>
-    </div>
-    <div class="stat-item">
-      <h3>Всего семестров</h3>
-      <p>{{ semester_data|length }}</p>
-    </div>
-  </div>
-
   {% if semester_data %}
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
       {% for item in semester_data %}

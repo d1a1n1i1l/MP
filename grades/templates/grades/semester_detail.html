@@ -29,7 +29,7 @@
         {% for d in disciplines %}
         <tr>
           <td>{{ d.title }}</td>
-          <td>{{ d.get_type_display }}</td>
+          <td>{{ d.get_assessment_type_display }}</td>
           <td>{{ d.expected_grade|default:"—" }}</td>
           <td>
             {% if d.actual_grade %}

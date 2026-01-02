@@ -14,30 +14,28 @@ class Semester(models.Model):
         return f"Семестр {self.number} ({self.academic_year})"
 
 class Discipline(models.Model):
-    DISCIPLINE_TYPES = [
-        ('lecture', 'Лекционный курс'),
-        ('practice', 'Практика'),
-        ('coursework', 'Курсовая работа'),
-        ('project', 'Проект'),
+    ASSESSMENT_TYPES = [
         ('exam', 'Экзамен'),
-        ('other', 'Другое'),
+        ('pass', 'Зачёт'),
+        ('pass_with_grade', 'Зачёт с оценкой'),
+        ('interview', 'Итоговое собеседование'),
     ]
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, related_name='disciplines')
     title = models.CharField(max_length=200)
-    type = models.CharField(max_length=20, choices=DISCIPLINE_TYPES, default='lecture')
-    expected_grade = models.CharField(max_length=10, blank=True, choices=[
-        ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')
-    ])
-    actual_grade = models.CharField(max_length=10, blank=True, choices=[
-        ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')
-    ])
-    for_diploma = models.BooleanField(default=False)
+    assessment_type = models.CharField(
+        max_length=20,
+        choices=ASSESSMENT_TYPES,
+        default='exam',
+        verbose_name="Вид контроля"
+    )
+    expected_grade = models.CharField(max_length=10, blank=True, verbose_name="Ожидаемая оценка")
+    actual_grade = models.CharField(max_length=10, blank=True, verbose_name="Фактическая оценка")
+    for_diploma = models.BooleanField(default=False, verbose_name="В диплом")
 
     def __str__(self):
-        return f"{self.title} ({self.get_type_display()})"
-
+        return f"{self.title} ({self.get_assessment_type_display()})"
     @staticmethod
     def calculate_gpa(disciplines):
         grade_map = {
