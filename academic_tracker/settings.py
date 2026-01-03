@@ -13,6 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',  # ← ДОБАВЛЕНО! Обязательно для статики
     'grades',  
     'accounts',
 ]
@@ -29,7 +30,7 @@ ROOT_URLCONF = 'academic_tracker.urls'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [BASE_DIR / 'grades/templates'],  # ← путь к шаблонам
+    'DIRS': [BASE_DIR / 'templates'],  # ← Исправлено: общий путь для всех шаблонов
     'APP_DIRS': True,
     'OPTIONS': {
         'context_processors': [
@@ -47,7 +48,12 @@ DATABASES = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = '/admin/login/'  # вход через админку
+
+# Аутентификация
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Статические файлы
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]  # Папка static рядом с manage.py

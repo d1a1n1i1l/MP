@@ -1,10 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Академическая ведомость{% endblock %}</title>
+  
+  <!-- Исправлена ссылка на Font Awesome (убраны пробелы) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- PWA -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'icons/icon-192.png' %}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'icons/icon-512.png' %}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Academic Tracker">
+
   <style>
     :root {
       --bg: #ffffff;
@@ -42,13 +56,16 @@
       line-height: 1.6;
       padding: 0;
       transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 1.5rem;
-      min-height: calc(100vh - 8rem); /* 8rem = header + footer */
+      flex: 1;
     }
 
     header {
@@ -222,6 +239,8 @@
       color: #94a3b8;
       font-size: 0.875rem;
       border-top: 1px solid var(--border);
+      background: var(--bg);
+      margin-top: auto;
     }
 
     @media (max-width: 768px) {
@@ -255,21 +274,22 @@
       </div>
     </header>
 
-    <!-- Условный заголовок -->
-    {% if block.super == "Войти в аккаунт" %}
-      <h1 style="text-align: center; margin: 2rem 0;">Войти в аккаунт</h1>
-    {% else %}
-      <div class="page-header">
-        <h1>{% block page_title %}{% endblock %}</h1>
-        {% block page_actions %}{% endblock %}
-      </div>
-    {% endif %}
+    {% block page_title_container %}
+      {% if block.super == "Войти в аккаунт" %}
+        <h1 style="text-align: center; margin: 2rem 0;">Войти в аккаунт</h1>
+      {% else %}
+        <div class="page-header">
+          <h1>{% block page_title %}{% endblock %}</h1>
+          {% block page_actions %}{% endblock %}
+        </div>
+      {% endif %}
+    {% endblock %}
 
     {% block content %}{% endblock %}
     {% block extra_js %}{% endblock %}
   </div>
 
-  <footer style="background: var(--bg);">
+  <footer>
     <p>© 2025 Academic Tracker • Ведомость за всё обучение</p>
   </footer>
 
