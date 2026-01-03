@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Semester, Discipline
 from django.http import HttpResponseRedirect
-from .utils import render_to_pdf
+
 @login_required
 def dashboard(request):
     semesters = Semester.objects.filter(user=request.user)
@@ -81,32 +81,3 @@ def diploma_view(request):
         'gpa': gpa
     })  
     
-@login_required
-def diploma_pdf(request):
-    disciplines = Discipline.objects.filter(user=request.user, for_diploma=True).select_related('semester')
-    gpa = Discipline.calculate_gpa(disciplines)
-    return render_to_pdf(
-        'grades/pdf/diploma_pdf.html',
-        {
-            'user': request.user,
-            'disciplines': disciplines,
-            'gpa': gpa
-        },
-        'diploma.pdf'
-    )
-
-@login_required
-def transcript_pdf(request, semester_id):
-    semester = get_object_or_404(Semester, id=semester_id, user=request.user)
-    disciplines = semester.disciplines.all()
-    gpa = Discipline.calculate_gpa(disciplines)
-    return render_to_pdf(
-        'grades/pdf/transcript_pdf.html',
-        {
-            'user': request.user,
-            'semester': semester,
-            'disciplines': disciplines,
-            'gpa': gpa
-        },
-        f'transcript_semester_{semester.number}.pdf'
-    )

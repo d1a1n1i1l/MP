@@ -10,6 +10,4 @@ urlpatterns = [
     path('semester/<int:semester_id>/add/', views.add_discipline, name='add_discipline'),
     path('discipline/<int:discipline_id>/delete/', views.delete_discipline, name='delete_discipline'),
     path('diploma/', views.diploma_view, name='diploma'),
-    path('diploma/pdf/', views.diploma_pdf, name='diploma_pdf'),
-    path('semester/<int:semester_id>/pdf/', views.transcript_pdf, name='transcript_pdf'),
 ]
