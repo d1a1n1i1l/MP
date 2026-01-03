@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Безопасно ТОЛЬКО для локальной разработки
 SECRET_KEY = 'django-insecure-academic-tracker-dev-key-1234567890'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.20.10.3', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
