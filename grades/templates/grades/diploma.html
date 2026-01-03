@@ -5,7 +5,13 @@
 {% block content %}
   <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
 
-    
+    <!-- Кнопка экспорта PDF -->
+     <div style="text-align: center; margin-bottom: 2rem;">
+       <a href="{% url 'grades:export_diploma_excel' %}" class="btn" style="background: var(--success);">
+         <i class="fas fa-file-excel"></i> Скачать Excel
+       </a>
+     </div>
+
     {% if disciplines %}
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
         <thead>

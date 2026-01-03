@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Semester, Discipline
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from .excel_utils import export_diploma_to_excel, export_transcript_to_excel
 
 @login_required
 def dashboard(request):
@@ -80,4 +81,30 @@ def diploma_view(request):
         'disciplines': disciplines,
         'gpa': gpa
     })  
+from .excel_utils import export_diploma_to_excel, export_transcript_to_excel
+
+@login_required
+def export_diploma_excel(request):
+    disciplines = Discipline.objects.filter(user=request.user, for_diploma=True).select_related('semester')
+    gpa = Discipline.calculate_gpa(disciplines)
     
+    wb = export_diploma_to_excel(disciplines, request.user, gpa)
+    
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=diploma.xlsx'
+    wb.save(response)
+    return response
+
+@login_required
+def export_transcript_excel(request, semester_id):
+    semester = get_object_or_404(Semester, id=semester_id, user=request.user)
+    disciplines = semester.disciplines.all()
+    gpa = Discipline.calculate_gpa(disciplines)
+    
+    wb = export_transcript_to_excel(disciplines, semester, request.user, gpa)
+    
+    filename = f"vedomost_semestr_{semester.number}.xlsx"
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={filename}'
+    wb.save(response)
+    return response    

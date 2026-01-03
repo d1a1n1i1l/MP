@@ -8,9 +8,14 @@
       <h2>Семестр {{ semester.number }} ({{ semester.academic_year }})</h2>
       <p>Средний балл: <strong>{{ gpa|floatformat:"2" }}</strong></p>
     </div>
-    <a href="{% url 'grades:add_discipline' semester.id %}" class="btn">
-      <i class="fas fa-plus"></i> Добавить дисциплину
-    </a>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{% url 'grades:export_transcript_excel' semester.id %}" class="btn" style="background: #10b981;">
+        <i class="fas fa-file-excel"></i> Excel
+      </a>
+      <a href="{% url 'grades:add_discipline' semester.id %}" class="btn">
+        <i class="fas fa-plus"></i> Добавить
+      </a>
+    </div>
   </div>
 
   {% if disciplines %}
@@ -98,7 +103,7 @@
 <script>
   function openDeleteModal(id, title) {
     document.getElementById('modalDisciplineTitle').textContent = title;
-    document.getElementById('deleteConfirmLink').href = `{% url 'grades:delete_discipline' ${id} %}`;
+    document.getElementById('deleteConfirmLink').href = `/semester/${id}/delete/`; // Исправлен URL
     document.getElementById('deleteModal').style.display = 'flex';
   }
 
